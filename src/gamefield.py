@@ -1,11 +1,12 @@
-#!/usr/bin/python2.6 -tt
+#!/usr/bin/env python
 '''
-Created on Jun 30, 2011
-
-@author: xarts
-
 Module will include GameField class and various utility functions for working with it.
 '''
+
+__author__ = "Xarts19 (xarts19@gmail.com)"
+__version__ = "Version: 0.0.1 "
+__date__ = "June 30, 2011"
+
 
 class GameField:
     '''Represents a game field as a set of inequalities.

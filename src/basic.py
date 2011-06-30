@@ -1,4 +1,4 @@
-#!/usr/bin/python2.6 -tt
+#!/usr/bin/env python
 
 """Auto-generated file
 
