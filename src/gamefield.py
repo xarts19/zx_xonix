@@ -9,6 +9,10 @@ __date__ = "June 30, 2011"
 
 import pygame
 
+import logging
+import colorer
+LOGGER = logging.getLogger('main.gamefield')
+
 class GameField(pygame.sprite.Sprite):
     '''Represents a game field as a set of inequalities.
     '''

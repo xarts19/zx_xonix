@@ -8,4 +8,8 @@ __author__ = "Xarts19 (xarts19@gmail.com)"
 __version__ = "Version: 0.0.1 "
 __date__ = "June 30, 2011"
 
+import logging
+import colorer
+LOGGER = logging.getLogger('main.physicsengine')
+
 pass

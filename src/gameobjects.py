@@ -9,6 +9,10 @@ __date__ = "June 30, 2011"
 
 import pygame
 
+import logging
+import colorer
+LOGGER = logging.getLogger('main.gameobjects')
+
 class GameObject(pygame.sprite.Sprite):
     '''Class, representing base game object. Subject of derivation of other,
     more specific game objects.

@@ -9,6 +9,9 @@ __version__ = "Version: 0.0.1 "
 __date__ = "Date: 2011-04-22 17:34:04.129696 "
 
 import sys
+import logging
+import colorer
+LOGGER = logging.getLogger('main.window')
 
 try:
     import pygame
