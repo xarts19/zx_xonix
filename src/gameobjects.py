@@ -7,9 +7,9 @@ __author__ = "Xarts19 (xarts19@gmail.com)"
 __version__ = "Version: 0.0.1 "
 __date__ = "June 30, 2011"
 
+import pygame
 
-
-class GameObject():
+class GameObject(pygame.sprite.Sprite):
     '''Class, representing base game object. Subject of derivation of other,
     more specific game objects.
     '''

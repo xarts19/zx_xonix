@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-"""Auto-generated file
-
+"""
+Draws game window and handles events.
 """
 
 __author__ = "Xarts19 (xarts19@gmail.com)"
@@ -17,26 +17,29 @@ except ImportError, err:
     print("%s Failed to Load Module: %s" % (__file__, err))
     sys.exit(1)
 
+import gamefield
+import gameobjects
+import physicsengine
+
 class Game(object):
     """Our game object! This is a fairly simple object that handles the
     initialization of pygame and sets up our game to run."""
 
     def __init__(self):
         """Called when the the Game object is initialized. Initializes
-        pygame and sets up our pygame window and other pygame tools
-        that we will need for more complicated tutorials."""
+        pygame and sets up our pygame window and other pygame tools."""
 
         # load and set up pygame
         pygame.init()
 
         # create our window
-        self.window = pygame.display.set_mode((800, 600))
+        self.window = pygame.display.set_mode((600, 600))
 
         # clock for ticking
         self.clock = pygame.time.Clock()
 
         # set the window title
-        pygame.display.set_caption("Pygame Tutorial 2 - Basic")
+        pygame.display.set_caption("Zonix")
 
         # tell pygame to only pay attention to certain events
         # we want to know if the user hits the X on the window, and we
@@ -46,8 +49,6 @@ class Game(object):
     def run(self):
         """Runs the game. Contains the game loop that computes and renders
         each frame."""
-
-        print 'Starting Event Loop'
 
         running = True
         # run until something tells us to stop
