@@ -31,3 +31,7 @@ class Ball(GameObject):
         GameObject.__init__(self)
         self.image, self.rect = data.load_image('avatar.png', -1)
 
+    def update(self):
+        pos = pygame.mouse.get_pos()
+        self.rect.midtop = pos
+
