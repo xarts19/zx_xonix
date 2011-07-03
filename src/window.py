@@ -16,13 +16,17 @@ LOGGER = logging.getLogger('main.window')
 try:
     import pygame
     import pygame.locals as pyg_loc
-except ImportError, err:
-    print("%s Failed to Load Module: %s" % (__file__, err))
-    sys.exit(1)
+except ImportError as ex:
+    #LOGGER.exception("%s Failed to load module." % __file__)
+    sys.exit("%s Failed to load module. %s" % (__file__, ex))
+
+if not pygame.font: LOGGER.warning('Fonts disabled')
+if not pygame.mixer: LOGGER.warning('Sound disabled')
 
 import gamefield
 import gameobjects
 import physicsengine
+import data
 
 class Game(object):
     """Our game object! This is a fairly simple object that handles the
@@ -32,11 +36,17 @@ class Game(object):
         """Called when the the Game object is initialized. Initializes
         pygame and sets up our pygame window and other pygame tools."""
 
+        LOGGER.debug('Initializing window')
+
         # load and set up pygame
         pygame.init()
 
         # create our window
         self.window = pygame.display.set_mode((600, 600))
+
+        # create background
+        self.background = pygame.Surface(self.window.get_size()).convert()
+        self.background.fill((250, 250, 250))
 
         # clock for ticking
         self.clock = pygame.time.Clock()
@@ -44,14 +54,27 @@ class Game(object):
         # set the window title
         pygame.display.set_caption("Zonix")
 
+        # disable mouse
+        pygame.mouse.set_visible(0)
+
         # tell pygame to only pay attention to certain events
         # we want to know if the user hits the X on the window, and we
         # want keys so we can close the window with the esc key
         pygame.event.set_allowed([pyg_loc.QUIT, pyg_loc.KEYDOWN])
 
+        # init game field
+        self.gamefield = gamefield.GameField()
+
+        # init 1 ball
+        self.ball = gameobjects.Ball()
+
+        self.allsprites = pygame.sprite.RenderPlain([self.ball])
+
     def run(self):
         """Runs the game. Contains the game loop that computes and renders
         each frame."""
+
+        LOGGER.debug('Game started')
 
         running = True
         # run until something tells us to stop
@@ -65,12 +88,17 @@ class Game(object):
             running = self.handleEvents()
 
             # update the title bar with our frames per second
-            pygame.display.set_caption('Pygame Tutorial 2 - Basic   %d fps' % self.clock.get_fps())
+            pygame.display.set_caption('Zonix %d fps' % self.clock.get_fps())
+
+
+            self.window.blit(self.background, (0, 0))
+            self.allsprites.update()
+            self.allsprites.draw(self.window)
 
             # render the screen, even though we don't have anything going on right now
             pygame.display.flip()
 
-        print 'Quitting. Thanks for playing'
+        LOGGER.debug('Game finished')
 
     def handleEvents(self):
         """Poll for PyGame events and behave accordingly. Return false to stop
@@ -88,8 +116,3 @@ class Game(object):
                     return False
         return True
 
-
-# create a game and run it
-if __name__ == '__main__':
-    game = Game()
-    game.run()

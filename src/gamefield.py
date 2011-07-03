@@ -14,8 +14,8 @@ import colorer
 LOGGER = logging.getLogger('main.gamefield')
 
 class GameField(pygame.sprite.Sprite):
-    '''Represents a game field as a set of inequalities.
-    '''
+    '''Represents a game field as a set of inequalities.'''
 
     def __init__(self):
-        pass
+        pygame.sprite.Sprite.__init__(self)
+

@@ -14,8 +14,6 @@ LOGGER = logging.getLogger('main')
 LOGGER_FORMAT = "%(name)s--%(levelname)s--%(asctime)s - %(message)s"
 LOGGER_DATE_FORMAT = "%d-%m-%y %H:%M:%S"
 
-import window
-
 def init_logging(debug_level):
     '''Initialize logging system.'''
     LOGGER.setLevel(debug_level)
@@ -48,9 +46,14 @@ def parse_args():
 def main():
     '''Launch the program.'''
     parse_args()
-    game = window.Game()
-    game.run()
-
+    try:
+        import window
+        game = window.Game()
+        game.run()
+    except Exception as ex:
+        LOGGER.exception('Program exited unexpectedly: ')
+    except BaseException as ex:
+        LOGGER.exception('Program exited unexpectedly: ')
 
 if __name__ == "__main__":
     main()

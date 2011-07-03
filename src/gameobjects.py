@@ -13,10 +13,21 @@ import logging
 import colorer
 LOGGER = logging.getLogger('main.gameobjects')
 
+import data
+
 class GameObject(pygame.sprite.Sprite):
     '''Class, representing base game object. Subject of derivation of other,
-    more specific game objects.
-    '''
+    more specific game objects.'''
 
     def __init__(self):
-        pass
+        pygame.sprite.Sprite.__init__(self)
+
+
+
+class Ball(GameObject):
+    '''Round object.'''
+
+    def __init__(self):
+        GameObject.__init__(self)
+        self.image, self.rect = data.load_image('avatar.png', -1)
+
