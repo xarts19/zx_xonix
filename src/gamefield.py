@@ -19,7 +19,7 @@ PIXEL_COLOR = pygame.Color(0, 0, 255, 255)
 class GameField(pygame.sprite.Sprite):
     '''Represents a game field as a set of inequalities.'''
 
-    def __init__(self, level=2, size=(600, 600)):
+    def __init__(self, level=1, size=(600, 600)):
         pygame.sprite.Sprite.__init__(self)
         self.constraints = self.parse_constr(self.load_constr(level))
         self.size = size
