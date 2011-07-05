@@ -37,4 +37,5 @@ class Ball(GameObject):
 
     def update(self):
         self.rect.center = self.position
+        self.rect.center = pygame.mouse.get_pos()
 

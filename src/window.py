@@ -57,7 +57,7 @@ class Game(object):
         # we want to know if the user hits the X on the window, and we
         # want keys so we can close the window with the esc key
         pygame.event.set_allowed([pyg_loc.QUIT, pyg_loc.KEYDOWN])
-
+        
         # init game field
         self.gamefield = gamefield.GameField(size=self.window.get_size())
 
