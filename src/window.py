@@ -44,10 +44,6 @@ class Game(object):
         # create our window
         self.window = pygame.display.set_mode((600, 600))
 
-        # create background
-        self.background = pygame.Surface(self.window.get_size()).convert()
-        self.background.fill((250, 250, 250))
-
         # clock for ticking
         self.clock = pygame.time.Clock()
 
@@ -63,7 +59,7 @@ class Game(object):
         pygame.event.set_allowed([pyg_loc.QUIT, pyg_loc.KEYDOWN])
 
         # init game field
-        self.gamefield = gamefield.GameField()
+        self.gamefield = gamefield.GameField(size=self.window.get_size())
 
         # init 1 ball
         self.ball = gameobjects.Ball()
@@ -90,8 +86,7 @@ class Game(object):
             # update the title bar with our frames per second
             pygame.display.set_caption('Zonix %d fps' % self.clock.get_fps())
 
-
-            self.window.blit(self.background, (0, 0))
+            self.window.blit(self.gamefield.image, (0, 0))
             self.allsprites.update()
             self.allsprites.draw(self.window)
 

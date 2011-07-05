@@ -27,11 +27,14 @@ class GameObject(pygame.sprite.Sprite):
 class Ball(GameObject):
     '''Round object.'''
 
-    def __init__(self):
+    def __init__(self, size=40, pos=(50, 50)):
         GameObject.__init__(self)
-        self.image, self.rect = data.load_image('avatar.png', -1)
+        self.size = size
+        self.position = pos
+        self.image, self.rect = data.load_image('ball.gif', -1)
+        self.image = pygame.transform.scale(self.image, (self.size, self.size))
+        self.rect = self.image.get_rect()
 
     def update(self):
-        pos = pygame.mouse.get_pos()
-        self.rect.midtop = pos
+        self.rect.center = self.position
 
