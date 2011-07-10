@@ -31,6 +31,10 @@ import gameobjects
 import physicsengine
 import data
 
+#WORLD in meters
+WIDTH = 100
+HEIGHT = 100
+
 class Game(object):
     """Our game object! This is a fairly simple object that handles the
     initialization of pygame and sets up our game to run."""
@@ -45,7 +49,12 @@ class Game(object):
         pygame.init()
 
         # create our window
-        self.window = pygame.display.set_mode((600, 600))
+        w = 600
+        h = 600
+        self.window = pygame.display.set_mode((w, h))
+        scale_x = w / float(WIDTH)
+        scale_y = h / float(HEIGHT)
+        scale = scale_x, scale_y
 
         # clock for ticking
         self.clock = pygame.time.Clock()
@@ -63,41 +72,17 @@ class Game(object):
 
         # init game field
         #self.gamefield = gamefield.GameField(size=self.window.get_size())
-        # create world
-        worldAABB = box2d.b2AABB()
-        worldAABB.lowerBound = (-100, -100)
-        worldAABB.upperBound = (700, 700)
-        gravity = (0, 0)
-        doSleep = True
-        world = box2d.b2World(worldAABB, gravity, doSleep)
-        #add some physics
-        for x, y, w, h in [(0, 0, 300, 10), (0, 0, 10, 300), (580, 0, 300, 10), (0, 580, 10, 300)]:
-            groundBodyDef = box2d.b2BodyDef()
-            groundBodyDef.position = (x, y)
-            groundBody = world.CreateBody(groundBodyDef)
-            groundShapeDef = box2d.b2PolygonDef()
-            groundShapeDef.SetAsBox(w / 2, h / 2)
-            groundBody.CreateShape(groundShapeDef)
+        self.gamefield = gamefield.GameField(scale, (WIDTH, HEIGHT))
+        self.world = self.gamefield.world
+
 
         # init 5 balls
         self.balls = []
-        for i in range(5):
-            size = random.randint(30, 50)
-            pos = random.randint(50, self.window.get_size()[0] - 50), \
-                    random.randint(50, self.window.get_size()[1] - 50)
-            self.balls.append(gameobjects.Ball(size, pos))
-            speed = random.randint(50, 200), random.randint(50, 200)
-            self.balls[-1].update_speed(speed)
-
-            #add some physics
-            bodyDef = box2d.b2BodyDef()
-            bodyDef.position = pos
-            body = world.CreateBody(bodyDef)
-            shapeDef = box2d.b2PolygonDef()
-            shapeDef.SetAsBox(size / 2, size / 2)
-            shapeDef.density = 1
-            shapeDef.friction = 0.3
-            body.CreateShape(shapeDef)
+        for i in range(1000):
+            size = 0.7
+            #pos = random.randint(5, 100), random.randint(5, 100)
+            pos = 10 + i / 50, 10 + i % 50
+            self.balls.append(gameobjects.Ball(self.world, scale, size, pos))
 
         self.allsprites = pygame.sprite.RenderPlain(self.balls)
 
@@ -107,9 +92,16 @@ class Game(object):
 
         LOGGER.debug('Game started')
 
+        #init simulation
+        timeStep = 1.0 / 60.0
+        velocityIterations = 10
+        positionIterations = 8
+
         running = True
         # run until something tells us to stop
         while running:
+
+            self.world.Step(timeStep, velocityIterations, positionIterations)
 
             # tick pygame clock
             # you can limit the fps by passing the desired frames per seccond to tick()
@@ -141,6 +133,14 @@ class Game(object):
 
             # handle user input
             elif event.type == pyg_loc.KEYDOWN:
+                if event.key == pyg_loc.K_UP:
+                    self.world.SetGravity(box2d.b2Vec2(0, -40))
+                if event.key == pyg_loc.K_DOWN:
+                    self.world.SetGravity(box2d.b2Vec2(0, 40))
+                if event.key == pyg_loc.K_LEFT:
+                    self.world.SetGravity(box2d.b2Vec2(-40, 0))
+                if event.key == pyg_loc.K_RIGHT:
+                    self.world.SetGravity(box2d.b2Vec2(40, 0))
                 # if the user presses escape, quit the event loop.
                 if event.key == pyg_loc.K_ESCAPE:
                     return False
