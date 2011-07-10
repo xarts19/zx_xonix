@@ -60,6 +60,8 @@ class GameField(pygame.sprite.Sprite):
             groundBody = world.CreateBody(groundBodyDef)
             groundShapeDef = box2d.b2PolygonDef()
             groundShapeDef.SetAsBox(w, h)
+            groundShapeDef.friction = 0.7
+            groundShapeDef.restitution = 1
             groundBody.CreateShape(groundShapeDef)
             self.draw_AABB(surface, (x, y, w * 2, h * 2), BORDER_COLOR)
             print groundBody.position

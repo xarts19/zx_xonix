@@ -52,7 +52,8 @@ class Ball(GameObject):
         shapeDef = box2d.b2CircleDef()
         shapeDef.radius = self.radius
         shapeDef.density = 1
-        shapeDef.friction = 0.5
+        shapeDef.friction = 0.7
+        shapeDef.restitution = 1
         body.CreateShape(shapeDef)
         body.SetMassFromShapes()
         return body
