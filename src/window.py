@@ -62,7 +62,22 @@ class Game(object):
         pygame.event.set_allowed([pyg_loc.QUIT, pyg_loc.KEYDOWN])
 
         # init game field
-        self.gamefield = gamefield.GameField(size=self.window.get_size())
+        #self.gamefield = gamefield.GameField(size=self.window.get_size())
+        # create world
+        worldAABB = box2d.b2AABB()
+        worldAABB.lowerBound = (-100, -100)
+        worldAABB.upperBound = (700, 700)
+        gravity = (0, 0)
+        doSleep = True
+        world = box2d.b2World(worldAABB, gravity, doSleep)
+        #add some physics
+        for x, y, w, h in [(0, 0, 300, 10), (0, 0, 10, 300), (580, 0, 300, 10), (0, 580, 10, 300)]:
+            groundBodyDef = box2d.b2BodyDef()
+            groundBodyDef.position = (x, y)
+            groundBody = world.CreateBody(groundBodyDef)
+            groundShapeDef = box2d.b2PolygonDef()
+            groundShapeDef.SetAsBox(w / 2, h / 2)
+            groundBody.CreateShape(groundShapeDef)
 
         # init 5 balls
         self.balls = []
@@ -73,6 +88,16 @@ class Game(object):
             self.balls.append(gameobjects.Ball(size, pos))
             speed = random.randint(50, 200), random.randint(50, 200)
             self.balls[-1].update_speed(speed)
+
+            #add some physics
+            bodyDef = box2d.b2BodyDef()
+            bodyDef.position = pos
+            body = world.CreateBody(bodyDef)
+            shapeDef = box2d.b2PolygonDef()
+            shapeDef.SetAsBox(size / 2, size / 2)
+            shapeDef.density = 1
+            shapeDef.friction = 0.3
+            body.CreateShape(shapeDef)
 
         self.allsprites = pygame.sprite.RenderPlain(self.balls)
 
