@@ -30,12 +30,15 @@ class Ball(GameObject):
     def __init__(self, size=40, pos=(50, 50)):
         GameObject.__init__(self)
         self.size = size
-        self.position = pos
+        self.position = list(pos)
         self.image, self.rect = data.load_image('ball.gif', -1)
         self.image = pygame.transform.scale(self.image, (self.size, self.size))
         self.rect = self.image.get_rect()
 
     def update(self):
+        self.position[0] += self.speed[0] / 60
+        self.position[1] += self.speed[1] / 60
         self.rect.center = self.position
-        self.rect.center = pygame.mouse.get_pos()
 
+    def update_speed(self, speed):
+        self.speed = speed

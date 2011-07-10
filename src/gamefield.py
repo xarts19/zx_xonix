@@ -20,16 +20,16 @@ BORDER_COLOR = pygame.Color(0, 0, 255, 255)
 class GameField(pygame.sprite.Sprite):
     '''Represents a game field as a set of inequalities.'''
 
-    def __init__(self, level=3, size=(600, 600)):
+    def __init__(self, level=1, size=(600, 600)):
         pygame.sprite.Sprite.__init__(self)
         self.constraints = self.parse_constr(self.load_constr(level))
         self.size = size
         self.image = self.build_surface(self.constraints)
         self.rect = self.image.get_rect()   # Rect area for updating image
 
-    
+
     def load_constr(self, level=1):
-        '''Creating gamefield borders'''        
+        '''Creating gamefield borders'''
         if level == 1:
             return ['x>10', 'x<990', 'y>10', 'y<990']
         if level == 2:
@@ -50,7 +50,7 @@ class GameField(pygame.sprite.Sprite):
         '''Creating game field'''
         surface = pygame.Surface((1000, 1000))
         surface.fill((125, 255, 125, 255))
-    
+
         for x in range(0, 1000):
             for y in range(0, 1000):
                 for constr in constraints:
@@ -58,5 +58,5 @@ class GameField(pygame.sprite.Sprite):
                         surface.set_at((x, y), BORDER_COLOR) #Put pixel
 
         return pygame.transform.scale(surface, self.size).convert() #Resize field
-    
+
 

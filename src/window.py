@@ -9,6 +9,7 @@ __version__ = "Version: 0.0.1 "
 __date__ = "Date: 2011-04-22 17:34:04.129696 "
 
 import sys
+import random
 import logging
 import colorer
 LOGGER = logging.getLogger('main.window')
@@ -19,6 +20,8 @@ try:
 except ImportError as ex:
     #LOGGER.exception("%s Failed to load module." % __file__)
     sys.exit("%s Failed to load module. %s" % (__file__, ex))
+
+import Box2D as box2d
 
 if not pygame.font: LOGGER.warning('Fonts disabled')
 if not pygame.mixer: LOGGER.warning('Sound disabled')
@@ -57,14 +60,21 @@ class Game(object):
         # we want to know if the user hits the X on the window, and we
         # want keys so we can close the window with the esc key
         pygame.event.set_allowed([pyg_loc.QUIT, pyg_loc.KEYDOWN])
-        
+
         # init game field
         self.gamefield = gamefield.GameField(size=self.window.get_size())
 
-        # init 1 ball
-        self.ball = gameobjects.Ball()
+        # init 5 balls
+        self.balls = []
+        for i in range(5):
+            size = random.randint(30, 50)
+            pos = random.randint(50, self.window.get_size()[0] - 50), \
+                    random.randint(50, self.window.get_size()[1] - 50)
+            self.balls.append(gameobjects.Ball(size, pos))
+            speed = random.randint(50, 200), random.randint(50, 200)
+            self.balls[-1].update_speed(speed)
 
-        self.allsprites = pygame.sprite.RenderPlain([self.ball])
+        self.allsprites = pygame.sprite.RenderPlain(self.balls)
 
     def run(self):
         """Runs the game. Contains the game loop that computes and renders
