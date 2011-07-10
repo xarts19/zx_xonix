@@ -41,7 +41,7 @@ class GameField(pygame.sprite.Sprite):
         worldAABB = box2d.b2AABB()
         worldAABB.lowerBound = (-10, -10)
         worldAABB.upperBound = (110, 110)
-        gravity = box2d.b2Vec2(0, 40)
+        gravity = box2d.b2Vec2(0, 0)
         doSleep = True
         world = box2d.b2World(worldAABB, gravity, doSleep)
         #add some physics
@@ -60,7 +60,9 @@ class GameField(pygame.sprite.Sprite):
             groundBody = world.CreateBody(groundBodyDef)
             groundShapeDef = box2d.b2PolygonDef()
             groundShapeDef.SetAsBox(w, h)
-            groundShapeDef.friction = 0.7
+            groundShapeDef.friction = 0
+            groundShapeDef.linearDamping = 0.0
+            groundShapeDef.angularDamping = 0.0
             groundShapeDef.restitution = 1
             groundBody.CreateShape(groundShapeDef)
             self.draw_AABB(surface, (x, y, w * 2, h * 2), BORDER_COLOR)

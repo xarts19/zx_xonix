@@ -35,7 +35,6 @@ class Ball(GameObject):
         self.scale = world_scale
         self.radius = radius
         self.position = list(pos)
-        self.speed = (0, 0)
         self.physics = self.create_phisycs_object(world)
         self.image, self.rect = data.load_image('ball.gif', -1)
         size = self.transform((self.radius * 2, self.radius * 2))
@@ -47,12 +46,13 @@ class Ball(GameObject):
         bodyDef = box2d.b2BodyDef()
         bodyDef.position = self.position
         bodyDef.userdata = self
-        bodyDef.massData.mass = 0.01
         body = world.CreateBody(bodyDef)
         shapeDef = box2d.b2CircleDef()
         shapeDef.radius = self.radius
         shapeDef.density = 1
-        shapeDef.friction = 0.7
+        shapeDef.linearDamping = 0.0
+        shapeDef.angularDamping = 0.0
+        shapeDef.friction = 0
         shapeDef.restitution = 1
         body.CreateShape(shapeDef)
         body.SetMassFromShapes()
@@ -64,10 +64,6 @@ class Ball(GameObject):
         self.rect = self.image.get_rect()
         self.position = self.transform(self.physics.position.tuple())
         self.rect.center = self.position
-
-
-    def update_speed(self, speed):
-        self.speed = speed
 
     def transform(self, point):
         return point[0] * self.scale[0], point[1] * self.scale[1]

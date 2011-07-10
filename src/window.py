@@ -49,8 +49,8 @@ class Game(object):
         pygame.init()
 
         # create our window
-        w = 600
-        h = 600
+        w = 800
+        h = 800
         self.window = pygame.display.set_mode((w, h))
         scale_x = w / float(WIDTH)
         scale_y = h / float(HEIGHT)
@@ -78,11 +78,14 @@ class Game(object):
 
         # init 5 balls
         self.balls = []
-        for i in range(1000):
-            size = 0.7
+        for i in range(50):
+            size = 0.5 + random.random() * 3
             #pos = random.randint(5, 100), random.randint(5, 100)
             pos = 10 + i / 50, 10 + i % 50
             self.balls.append(gameobjects.Ball(self.world, scale, size, pos))
+            speed_x = random.randint(-50, 50)
+            speed_y = random.randint(-50, 50)
+            self.balls[-1].physics.ApplyImpulse(box2d.b2Vec2(speed_x, speed_y), box2d.b2Vec2(0, 0))
 
         self.allsprites = pygame.sprite.RenderPlain(self.balls)
 
