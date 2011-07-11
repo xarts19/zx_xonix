@@ -9,6 +9,7 @@ __version__ = "Version: 0.0.1 "
 __date__ = "Date: 2011-04-22 17:34:04.129696 "
 
 import sys
+import os
 import random
 import logging
 import colorer
@@ -26,10 +27,7 @@ import Box2D as box2d
 if not pygame.font: LOGGER.warning('Fonts disabled')
 if not pygame.mixer: LOGGER.warning('Sound disabled')
 
-import gamefield
-import gameobjects
 import physicsengine
-import data
 
 #WORLD in meters
 WIDTH = 100
@@ -49,12 +47,15 @@ class Game(object):
         pygame.init()
 
         # create our window
-        w = 800
-        h = 800
-        self.window = pygame.display.set_mode((w, h))
-        scale_x = w / float(WIDTH)
-        scale_y = h / float(HEIGHT)
-        scale = scale_x, scale_y
+
+        # initial window position
+        os.environ['SDL_VIDEO_WINDOW_POS'] = '0,0'
+
+        screen_size = (800, 800)
+
+        #gamefield size in meters for physics simulation
+        real_size = (WIDTH, HEIGHT)
+        self.window = pygame.display.set_mode(screen_size, pyg_loc.DOUBLEBUF)
 
         # clock for ticking
         self.clock = pygame.time.Clock()
@@ -71,23 +72,23 @@ class Game(object):
         pygame.event.set_allowed([pyg_loc.QUIT, pyg_loc.KEYDOWN])
 
         # init game field
-        #self.gamefield = gamefield.GameField(size=self.window.get_size())
-        self.gamefield = gamefield.GameField(scale, (WIDTH, HEIGHT))
-        self.world = self.gamefield.world
+        self.simulation = physicsengine.Simulation(screen_size, real_size)
 
+        # init static bounding boxes
+        self.simulation.create_level(0)
 
-        # init 5 balls
-        self.balls = []
+        # init dynamic balls
+
         for i in range(50):
             size = 0.5 + random.random() * 3
-            #pos = random.randint(5, 100), random.randint(5, 100)
             pos = 10 + i / 50, 10 + i % 50
-            self.balls.append(gameobjects.Ball(self.world, scale, size, pos))
-            speed_x = random.randint(-50, 50)
-            speed_y = random.randint(-50, 50)
-            self.balls[-1].physics.ApplyImpulse(box2d.b2Vec2(speed_x, speed_y), box2d.b2Vec2(0, 0))
+            ball = self.simulation.create_ball(pos, size)
 
-        self.allsprites = pygame.sprite.RenderPlain(self.balls)
+            x = random.randint(-50, 50)
+            y = random.randint(-50, 50)
+            ball.apply_force(x, y)
+
+        self.allsprites = pygame.sprite.RenderPlain(self.simulation.get_objects())
 
     def run(self):
         """Runs the game. Contains the game loop that computes and renders
@@ -95,16 +96,11 @@ class Game(object):
 
         LOGGER.debug('Game started')
 
-        #init simulation
-        timeStep = 1.0 / 60.0
-        velocityIterations = 10
-        positionIterations = 8
-
         running = True
         # run until something tells us to stop
         while running:
 
-            self.world.Step(timeStep, velocityIterations, positionIterations)
+            self.simulation.step()
 
             # tick pygame clock
             # you can limit the fps by passing the desired frames per seccond to tick()
@@ -116,7 +112,8 @@ class Game(object):
             # update the title bar with our frames per second
             pygame.display.set_caption('Zonix %d fps' % self.clock.get_fps())
 
-            self.window.blit(self.gamefield.image, (0, 0))
+            #self.window.blit(self.bg_image, (0, 0))
+            self.window.fill((134, 225, 0))
             self.allsprites.update()
             self.allsprites.draw(self.window)
 
@@ -137,13 +134,13 @@ class Game(object):
             # handle user input
             elif event.type == pyg_loc.KEYDOWN:
                 if event.key == pyg_loc.K_UP:
-                    self.world.SetGravity(box2d.b2Vec2(0, -40))
+                    self.simulation.applyGravity(0, -10)
                 if event.key == pyg_loc.K_DOWN:
-                    self.world.SetGravity(box2d.b2Vec2(0, 40))
+                    self.simulation.applyGravity(0, 10)
                 if event.key == pyg_loc.K_LEFT:
-                    self.world.SetGravity(box2d.b2Vec2(-40, 0))
+                    self.simulation.applyGravity(-10, 0)
                 if event.key == pyg_loc.K_RIGHT:
-                    self.world.SetGravity(box2d.b2Vec2(40, 0))
+                    self.simulation.applyGravity(10, 0)
                 # if the user presses escape, quit the event loop.
                 if event.key == pyg_loc.K_ESCAPE:
                     return False
