@@ -66,7 +66,7 @@ class Ball(GameObject):
             shapeDef.density = 1
         shapeDef.linearDamping = 0.0
         shapeDef.angularDamping = 0.0
-        shapeDef.friction = 0
+        shapeDef.friction = 0.1
         shapeDef.restitution = 1
         body.CreateShape(shapeDef)
         body.SetMassFromShapes()
@@ -101,7 +101,7 @@ class Box(GameObject):
         shapeDef.SetAsBox(self.size[0] / 2, self.size[1] / 2)
         if dynamic:
             shapeDef.density = 1
-        shapeDef.friction = 0
+        shapeDef.friction = 0.1
         shapeDef.linearDamping = 0.0
         shapeDef.angularDamping = 0.0
         shapeDef.restitution = 1

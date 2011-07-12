@@ -88,7 +88,7 @@ class Game(object):
             y = random.randint(-50, 50)
             ball.apply_force(x, y)
 
-        self.allsprites = pygame.sprite.RenderPlain(self.simulation.get_objects())
+        self.allsprites = pygame.sprite.RenderUpdates(self.simulation.get_objects())
 
     def run(self):
         """Runs the game. Contains the game loop that computes and renders
@@ -115,7 +115,7 @@ class Game(object):
             #self.window.blit(self.bg_image, (0, 0))
             self.window.fill((134, 225, 0))
             self.allsprites.update()
-            self.allsprites.draw(self.window)
+            l = self.allsprites.draw(self.window)
 
             # render the screen, even though we don't have anything going on right now
             pygame.display.flip()
