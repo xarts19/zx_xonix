@@ -104,7 +104,7 @@ class Game(object):
             self.simulation.step()
 
             # tick pygame clock
-            # you can limit the fps by passing the desired frames per seccond to tick()
+            # you can limit the fps by passing the desired frames per second to tick()
             self.clock.tick(60)
 
             # update the title bar with our frames per second
@@ -142,6 +142,8 @@ class Game(object):
                     self.simulation.applyGravity(-10, 0)
                 if event.key == pyg_loc.K_RIGHT:
                     self.simulation.applyGravity(10, 0)
+                if event.key == pyg_loc.K_SPACE:
+                    self.simulation.applyGravity(0, 0)
                 # if the user presses escape, quit the event loop.
                 if event.key == pyg_loc.K_ESCAPE:
                     return False
