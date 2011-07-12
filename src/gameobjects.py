@@ -51,7 +51,7 @@ class Ball(GameObject):
     '''Round object.'''
 
     def __init__(self, world, scale=(1, 1), radius=1, pos=(5, 5), dynamic=True):
-        GameObject.__init__(self, scale, pos, 'ball.gif', (radius * 2, radius * 2))
+        GameObject.__init__(self, scale, pos, 'avatar.png', (radius * 2, radius * 2))
         self.radius = radius
         self.physics = self.create_phisycs_object(world, dynamic)
 
