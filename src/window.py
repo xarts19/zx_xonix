@@ -22,8 +22,6 @@ except ImportError as ex:
     #LOGGER.exception("%s Failed to load module." % __file__)
     sys.exit("%s Failed to load module. %s" % (__file__, ex))
 
-import Box2D as box2d
-
 if not pygame.font: LOGGER.warning('Fonts disabled')
 if not pygame.mixer: LOGGER.warning('Sound disabled')
 
@@ -83,8 +81,8 @@ class Game(object):
             pos = 10 + i / 50, 10 + i % 50
             ball = self.simulation.create_ball(pos, size)
 
-            x = random.randint(-50, 50)
-            y = random.randint(-50, 50)
+            x = random.randint(-500, 500)
+            y = random.randint(-500, 500)
             ball.apply_force(x, y)
 
         self.simulation.create_box((10, 10), (30, 40))
