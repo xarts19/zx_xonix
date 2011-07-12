@@ -6,6 +6,7 @@ __author__ = "Xarts19 (xarts19@gmail.com)"
 __version__ = "Version: 0.0.1 "
 __date__ = "Jul 3, 2011"
 
+import sys
 import optparse
 import logging
 import colorer
@@ -50,10 +51,13 @@ def main():
         import window
         game = window.Game()
         game.run()
+        return 0
     except Exception as ex:
         LOGGER.exception('Program exited unexpectedly: ')
+        return 1
     except BaseException as ex:
         LOGGER.exception('Program exited unexpectedly: ')
+        return 1
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())
