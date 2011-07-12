@@ -88,6 +88,8 @@ class Game(object):
             y = random.randint(-50, 50)
             ball.apply_force(x, y)
 
+        self.simulation.create_box((10, 10), (30, 40))
+
         self.allsprites = pygame.sprite.RenderUpdates(self.simulation.get_objects())
 
     def run(self):
