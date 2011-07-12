@@ -106,9 +106,6 @@ class Game(object):
             # you can limit the fps by passing the desired frames per seccond to tick()
             self.clock.tick(60)
 
-            # handle pygame events -- if user closes game, stop running
-            running = self.handleEvents()
-
             # update the title bar with our frames per second
             pygame.display.set_caption('Zonix %d fps' % self.clock.get_fps())
 
@@ -119,6 +116,9 @@ class Game(object):
 
             # render the screen, even though we don't have anything going on right now
             pygame.display.flip()
+
+            # handle pygame events -- if user closes game, stop running
+            running = self.handleEvents()
 
         LOGGER.debug('Game finished')
 

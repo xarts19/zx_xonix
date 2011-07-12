@@ -30,7 +30,7 @@ class GameObject(pygame.sprite.Sprite):
         self.scale = scale
         self.position = list(pos)
         if isinstance(image, str):
-            self.image, self.rect = data.load_image(image, -1)
+            self.image = data.load_image(image, -1)
         else:
             self.image = image
         size = self.transform(size)
@@ -81,7 +81,7 @@ class Ball(GameObject):
 
 
 class Box(GameObject):
-    '''No-physics objects for field boundaries.'''
+    '''Rectangular objects.'''
 
     def __init__(self, world, scale=(1, 1), size=(1, 1), pos=(5, 5), dynamic=True):
         surface = pygame.Surface((size[0] * scale[0], size[1] * scale[1]))
