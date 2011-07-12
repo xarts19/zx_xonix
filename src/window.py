@@ -78,7 +78,6 @@ class Game(object):
         self.simulation.create_level(0)
 
         # init dynamic balls
-
         for i in range(50):
             size = 0.5 + random.random() * 3
             pos = 10 + i / 50, 10 + i % 50
@@ -87,6 +86,8 @@ class Game(object):
             x = random.randint(-50, 50)
             y = random.randint(-50, 50)
             ball.apply_force(x, y)
+
+        self.simulation.create_box((10, 10), (30, 40))
 
         self.allsprites = pygame.sprite.RenderUpdates(self.simulation.get_objects())
 
@@ -106,9 +107,6 @@ class Game(object):
             # you can limit the fps by passing the desired frames per seccond to tick()
             self.clock.tick(60)
 
-            # handle pygame events -- if user closes game, stop running
-            running = self.handleEvents()
-
             # update the title bar with our frames per second
             pygame.display.set_caption('Zonix %d fps' % self.clock.get_fps())
 
@@ -119,6 +117,9 @@ class Game(object):
 
             # render the screen, even though we don't have anything going on right now
             pygame.display.flip()
+
+            # handle pygame events -- if user closes game, stop running
+            running = self.handleEvents()
 
         LOGGER.debug('Game finished')
 

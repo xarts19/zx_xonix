@@ -8,6 +8,7 @@ __version__ = "Version: 0.0.1 "
 __date__ = "June 30, 2011"
 
 import pygame
+import pygame.locals as pyg_loc
 
 import math
 import logging
@@ -18,7 +19,7 @@ import Box2D as box2d
 
 import data
 
-FILL_COLOR = pygame.Color(125, 255, 125, 255)
+FILL_COLOR = pygame.Color(125, 255, 125, 0)
 BORDER_COLOR = pygame.Color(0, 0, 255, 255)
 
 class GameObject(pygame.sprite.Sprite):
@@ -30,7 +31,7 @@ class GameObject(pygame.sprite.Sprite):
         self.scale = scale
         self.position = list(pos)
         if isinstance(image, str):
-            self.image, self.rect = data.load_image(image, -1)
+            self.image = data.load_image(image, -1)
         else:
             self.image = image
         size = self.transform(size)
@@ -51,13 +52,21 @@ class Ball(GameObject):
     '''Round object.'''
 
     def __init__(self, world, scale=(1, 1), radius=1, pos=(5, 5), dynamic=True):
+<<<<<<< HEAD
         GameObject.__init__(self, scale, pos, 'Hairy_Ball.png', (radius * 2, radius * 2))
+=======
+        GameObject.__init__(self, scale, pos, 'ball.gif', (radius * 2, radius * 2))
+>>>>>>> 7cc2bd7cd08b7aac85c5319169d83b3e56caceb3
         self.radius = radius
         self.physics = self.create_phisycs_object(world, dynamic)
 
     def create_phisycs_object(self, world, dynamic):
         bodyDef = box2d.b2BodyDef()
+<<<<<<< HEAD
         bodyDef.position = self.position
+=======
+        bodyDef.position = (self.position[0] + self.radius / 2, self.position[1] + self.radius / 2)
+>>>>>>> 7cc2bd7cd08b7aac85c5319169d83b3e56caceb3
         bodyDef.userdata = self
         body = world.CreateBody(bodyDef)
         shapeDef = box2d.b2CircleDef()
@@ -81,12 +90,21 @@ class Ball(GameObject):
 
 
 class Box(GameObject):
+<<<<<<< HEAD
     '''No-physics objects for field boundaries.'''
+=======
+    '''Rectangular objects.'''
+>>>>>>> 7cc2bd7cd08b7aac85c5319169d83b3e56caceb3
 
     def __init__(self, world, scale=(1, 1), size=(1, 1), pos=(5, 5), dynamic=True):
         surface = pygame.Surface((size[0] * scale[0], size[1] * scale[1]))
         surface.fill(FILL_COLOR)
+<<<<<<< HEAD
         draw_AABB(surface, (pos[0], pos[1], size[0], size[1]), scale, BORDER_COLOR)
+=======
+        surface.set_colorkey(FILL_COLOR, pyg_loc.RLEACCEL)
+        draw_AABB(surface, (size[0], size[1]), scale, BORDER_COLOR)
+>>>>>>> 7cc2bd7cd08b7aac85c5319169d83b3e56caceb3
 
         GameObject.__init__(self, scale, pos, surface, size)
         self.size = size
@@ -101,11 +119,20 @@ class Box(GameObject):
         shapeDef.SetAsBox(self.size[0] / 2, self.size[1] / 2)
         if dynamic:
             shapeDef.density = 1
+<<<<<<< HEAD
         shapeDef.friction = 0.1
         shapeDef.linearDamping = 0.0
         shapeDef.angularDamping = 0.0
         shapeDef.restitution = 1
         body.CreateShape(shapeDef)
+=======
+        shapeDef.linearDamping = 0.0
+        shapeDef.angularDamping = 0.0
+        shapeDef.friction = 0.1
+        shapeDef.restitution = 1
+        body.CreateShape(shapeDef)
+        body.SetMassFromShapes()
+>>>>>>> 7cc2bd7cd08b7aac85c5319169d83b3e56caceb3
         return body
 
     def update(self):
@@ -116,6 +143,7 @@ class Box(GameObject):
         self.rect.center = self.position
 
 
+<<<<<<< HEAD
 def draw_AABB(surface, (x, y, w, h), scale, color):
     """
     Draw a wireframe around the AABB with the given color.
@@ -124,6 +152,16 @@ def draw_AABB(surface, (x, y, w, h), scale, color):
                 ((x + w) * scale[0], y * scale[1]),
                 ((x + w) * scale[0], (y + h) * scale[1]),
                 (x * scale[0], (y + h) * scale[1]),
+=======
+def draw_AABB(surface, (w, h), scale, color):
+    """
+    Draw a wireframe around the AABB with the given color.
+    """
+    points = [  (1, 1),
+                (w * scale[0] - 2, 1),
+                (w * scale[0] - 2, h * scale[1] - 2),
+                (1, h * scale[1] - 2),
+>>>>>>> 7cc2bd7cd08b7aac85c5319169d83b3e56caceb3
             ]
 
     pygame.draw.aalines(surface, color, True, points)
