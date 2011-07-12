@@ -44,8 +44,12 @@ class GameObject(pygame.sprite.Sprite):
 
     def apply_force(self, x, y):
         mass = self.physics.GetMass()
-        mass_center = self.physics.GetLocalCenter()
+        mass_center = self.physics.GetWorldCenter()
         self.physics.ApplyForce(box2d.b2Vec2(x * mass, y * mass), mass_center)
+
+    def apply_impulse(self, x, y):
+        mass_center = self.physics.GetWorldCenter()
+        self.physics.ApplyImpulse(box2d.b2Vec2(x, y), mass_center)
 
 
 class Ball(GameObject):
