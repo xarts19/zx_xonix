@@ -22,8 +22,6 @@ except ImportError as ex:
     #LOGGER.exception("%s Failed to load module." % __file__)
     sys.exit("%s Failed to load module. %s" % (__file__, ex))
 
-import Box2D as box2d
-
 if not pygame.font: LOGGER.warning('Fonts disabled')
 if not pygame.mixer: LOGGER.warning('Sound disabled')
 
@@ -89,11 +87,9 @@ class Game(object):
             #ball.apply_force(x, y)
             ball.apply_force(1000, 1000)
         
-            
             print dir(ball.physics)
             print dir(ball.groups())
             
-
         self.simulation.create_box((10, 10), (5, 5))
 
         self.allsprites = pygame.sprite.RenderUpdates(self.simulation.get_objects())
@@ -112,7 +108,7 @@ class Game(object):
             
 
             # tick pygame clock
-            # you can limit the fps by passing the desired frames per seccond to tick()
+            # you can limit the fps by passing the desired frames per second to tick()
             self.clock.tick(60)
 
             # update the title bar with our frames per second
@@ -151,6 +147,8 @@ class Game(object):
                     self.simulation.applyGravity(-10, 0)
                 if event.key == pyg_loc.K_RIGHT:
                     self.simulation.applyGravity(10, 0)
+                if event.key == pyg_loc.K_SPACE:
+                    self.simulation.applyGravity(0, 0)
                 # if the user presses escape, quit the event loop.
                 if event.key == pyg_loc.K_ESCAPE:
                     return False
