@@ -49,8 +49,7 @@ class GameObject(pygame.sprite.Sprite):
 
     def apply_impulse(self, x, y):
         mass_center = self.physics.GetWorldCenter()
-        self.physics.ApplyImpulse(box2d.b2Vec2(x, y), mass_center)
-
+        self.physics.ApplyImpulse(box2d.b2Vec2(x, y), mass_center)           
 
 class Ball(GameObject):
     '''Round object.'''
@@ -84,7 +83,7 @@ class Ball(GameObject):
         self.position = self.transform(self.physics.position.tuple())
         self.rect.center = self.position
 
-
+    
 class Box(GameObject):
     '''Rectangular objects.'''
 

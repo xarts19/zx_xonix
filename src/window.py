@@ -85,9 +85,16 @@ class Game(object):
 
             x = random.randint(-50, 50)
             y = random.randint(-50, 50)
-            ball.apply_force(x, y)
+            
+            #ball.apply_force(x, y)
+            ball.apply_force(1000, 1000)
+        
+            
+            print dir(ball.physics)
+            print dir(ball.groups())
+            
 
-        self.simulation.create_box((10, 10), (30, 40))
+        self.simulation.create_box((10, 10), (5, 5))
 
         self.allsprites = pygame.sprite.RenderUpdates(self.simulation.get_objects())
 
@@ -102,6 +109,7 @@ class Game(object):
         while running:
 
             self.simulation.step()
+            
 
             # tick pygame clock
             # you can limit the fps by passing the desired frames per seccond to tick()
@@ -135,7 +143,8 @@ class Game(object):
             # handle user input
             elif event.type == pyg_loc.KEYDOWN:
                 if event.key == pyg_loc.K_UP:
-                    self.simulation.applyGravity(0, -10)
+                    self.simulation.applyGravity(0, 0)
+                    #self.simulation.world.Refilter()
                 if event.key == pyg_loc.K_DOWN:
                     self.simulation.applyGravity(0, 10)
                 if event.key == pyg_loc.K_LEFT:
